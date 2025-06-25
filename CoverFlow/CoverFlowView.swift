@@ -1,5 +1,4 @@
 import SwiftUI
-import MusicKit
 
 struct CoverFlowView: View {
     @StateObject private var viewModel = AlbumViewModel()
@@ -19,7 +18,7 @@ struct CoverFlowView: View {
         }
         .background(Color.black.ignoresSafeArea())
         .task {
-            await viewModel.requestAuthorization()
+            viewModel.loadSampleAlbums()
         }
     }
 }
@@ -36,7 +35,7 @@ struct CoverFlowItem: View {
             let rotation = Angle(degrees: Double(relative / containerWidth) * 50)
             let scale = max(0.6, 1 - abs(relative) / containerWidth)
 
-            AsyncImage(url: album.artwork?.url(width: Int(itemSize * 2), height: Int(itemSize * 2))) { image in
+            AsyncImage(url: album.artworkURL) { image in
                 image
                     .resizable()
                     .aspectRatio(contentMode: .fill)
