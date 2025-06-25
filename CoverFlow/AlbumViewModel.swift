@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 import MusicKit
 
 @MainActor
@@ -22,7 +23,7 @@ class AlbumViewModel: ObservableObject {
             if response.items.isEmpty {
                 await loadCatalogAlbums()
             } else {
-                albums = response.items
+                albums = Array(response.items)
             }
         } catch {
             await loadCatalogAlbums()
@@ -34,7 +35,7 @@ class AlbumViewModel: ObservableObject {
             var search = MusicCatalogSearchRequest(term: "Top Albums", types: [Album.self])
             search.limit = 30
             let result = try await search.response()
-            albums = result.albums
+            albums = Array(result.albums)
         } catch {
             print("Failed to load catalog albums: \(error)")
         }
